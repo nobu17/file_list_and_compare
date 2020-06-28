@@ -13,8 +13,6 @@ class ConsoleArgs:
         self.dir_path = ""
 
     def check_args(self):
-        # check length
-        # print("length is {}".format(len(self.args)))
         if(len(self.args) < 2):
             self.isvalid = False
             self.errormessage = "引数がありません。"

@@ -1,5 +1,5 @@
 from .console_args import ConsoleArgs
-from domains.applications.path_app_serice import PathAppService, OutputFileListInput
+from domains.applications.path_app_service import PathAppService, OutputFileListInput
 
 class ConsoleController:
 
