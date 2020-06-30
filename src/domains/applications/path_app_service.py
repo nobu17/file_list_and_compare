@@ -1,7 +1,6 @@
-from domains.models.path_service import AbstractPathRepository
+from domains.models.path_repository import AbstractPathRepository
 # from domains.models.path_factory import AbstractPathFactory
 from domains.services.path_service import PathService
-
 
 class OutputFileListInput:
 
@@ -15,6 +14,20 @@ class OutputFileListInput:
     def validate(self):
         if(self.__dir_path is None):
             raise Exception("dir_path is empty")
+
+
+class CompareFileListInput:
+
+    def __init__(self, compare_file_path: str):
+        self.__compare_file_path = compare_file_path
+
+    @property
+    def compare_file_path(self):
+        return self.__compare_file_path
+
+    def validate(self):
+        if(self.__compare_file_path is None):
+            raise Exception("compare_file_path is empty")
 
 
 class PathAppService:
@@ -38,3 +51,21 @@ class PathAppService:
 
         # save file list
         self.__repository.save(file_list)
+
+    def compare_file(self, input: CompareFileListInput):
+        if(input is None):
+            raise Exception("input is null")
+
+        input.validate()
+        # load from csv file
+        file_list = self.__repository.load(input.compare_file_path)
+        if(len(file_list) < 1):
+            raise Exception("no file listed from CSV")
+
+        # compare each CSV file setting from actual enviroment
+        result = self.__path_service.compre_from_env(file_list)
+        # save a result as a file
+        self.__repository.save_compare_result(result)
+
+
+

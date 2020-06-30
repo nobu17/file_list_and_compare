@@ -1,7 +1,7 @@
 from domains.services.path_service import PathService
 from infrastructure.os_path_repository import OSPathRepository
 from infrastructure.os_path_factory import OSPathFactory
-from domains.applications.path_app_serice import PathAppService
+from domains.applications.path_app_service import PathAppService
 from console.console_controller import ConsoleController
 from console.console_args import ConsoleArgs
 import sys
@@ -17,6 +17,7 @@ controller = ConsoleController(app_service)
 
 try:
     controller.exec(args)
+    print("execution is finished.")
     sys.exit(0)
 except Exception as e:
     print("Error:{}".format(e))

@@ -1,8 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from typing import List
 from .path import PathBase
+from .compare import CompareResults
 from .path_factory import AbstractPathFactory
-
 
 class AbstractPathRepository(metaclass=ABCMeta):
 
@@ -14,7 +14,15 @@ class AbstractPathRepository(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def find(self, path: str) -> PathBase:
+        pass
+
+    @abstractmethod
     def save(self, paths: List[PathBase]):
+        pass
+
+    @abstractmethod
+    def save_compare_result(self, result: CompareResults):
         pass
 
     @abstractmethod

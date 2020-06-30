@@ -2,9 +2,9 @@ import glob
 import os
 import datetime
 from typing import List
-from domains.models.path_service import AbstractPathRepository
+from domains.models.path_repository import AbstractPathRepository
 from domains.models.path import PathBase
-
+from domains.services.path_service import CompareResults
 
 class OSPathRepository(AbstractPathRepository):
 
@@ -27,6 +27,10 @@ class OSPathRepository(AbstractPathRepository):
 
         return file_list
 
+    def find(self, path: str) -> PathBase:
+        file = self.factory.create(path)
+        return file
+
     def save(self, paths: List[PathBase]):
         csv_str = ""
         for path in paths:
@@ -38,5 +42,36 @@ class OSPathRepository(AbstractPathRepository):
         with open(file_path, mode='w') as f:
             f.write(csv_str)
 
+    def save_compare_result(self, result: CompareResults):
+        csv_str = f'success:{result.success_count},fail:{result.fail_count}\n'
+        for res in result.results:
+            csv_str += res.to_csv_str() + '\n'
+
+        dir = os.getcwd()
+        file_name = datetime.date.today().strftime(
+            '%Y%m%d%H%M%s') + "_compare_result.csv"
+        file_path = dir + "/" + file_name
+
+        with open(file_path, mode='w') as f:
+            f.write(csv_str)
+
     def load(self, setting_path: str) -> List[PathBase]:
-        pass
+        files_list = []
+        line_num = 0
+        with open(setting_path) as f:
+            while True:
+                try:
+                    line_num += 1
+                    line = f.readline().rstrip('\n')
+                    print(len(line))
+                    if(len(line) != 0):
+                        files_list.append(
+                            self.factory.create_from_csv_str(line))
+                    if not line:
+                        break
+                except Exception as e:
+                    print("Error:{}".format(e))
+                    message = f'Parse error from CSV file. LineNo:{line_num}, Str:{line}'
+                    raise Exception(message) from e
+
+        return files_list
