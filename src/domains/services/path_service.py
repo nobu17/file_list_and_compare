@@ -1,6 +1,6 @@
 from domains.models.path_repository import AbstractPathRepository
 from domains.models.compare import CompareResults, CompareInfo
-from domains.models.path import PathBase
+from domains.models.path import PathBase, Directory, File
 from typing import List
 
 
@@ -8,6 +8,25 @@ class PathService:
 
     def __init__(self, repository: AbstractPathRepository):
         self.__repository = repository
+
+    def filter_list(self, path_list: List[PathBase], ignore_extensions: List[str], is_ignore_directory: bool) -> List[PathBase]:
+        results = []
+        for path in path_list:
+            # check directory ignore option
+            if(type(path) is Directory and is_ignore_directory):
+                print("ignored dir:{}".format(path.path))
+                continue
+            # cehck ignore file exiteion
+            if(type(path) is File):
+                ext = path.extension
+                if (ext.startswith('.')):
+                    ext = ext[1:]
+                if(ext in ignore_extensions):
+                    print("ignored extension:{}".format(path.path))
+                    continue
+            results.append(path)
+
+        return results
 
     def compre_from_env(self, path_list: List[PathBase]) -> CompareResults:
         success_count = 0

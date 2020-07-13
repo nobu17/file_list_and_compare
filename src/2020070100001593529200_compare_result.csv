@@ -1,6 +1,0 @@
-success:3,fail:2
-./domains,domains,2020/06/24 21:18,2020/06/24 21:18,True,
-./__pycache__,__pycache__,2020/06/27 06:07,2020/06/27 06:07,True,
-./main.py,main.py,2020/06/28 21:35,2020/06/28 21:35,.,.py,739,False,created is different
-./infrastructure,infrastructure,2020/06/28 08:48,2020/06/29 08:48,False,updated is different
-./console,console,2020/06/29 00:25,2020/06/29 00:25,True,

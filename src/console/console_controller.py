@@ -13,7 +13,7 @@ class ConsoleController:
 
         if(args.mode == Mode.OUTPUT_LIST):
             print("output list mode")
-            self.__service.output_file_list(OutputFileListInput(args.dir_path))
+            self.__service.output_file_list(OutputFileListInput(args.dir_path, args.ignore_extensions, args.is_ignore_directory))
             print("output file list csv is finished")
         elif (args.mode == Mode.COMPARE_FROM_FILE):
             print("compare mode")

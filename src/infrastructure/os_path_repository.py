@@ -39,7 +39,7 @@ class OSPathRepository(AbstractPathRepository):
             csv_str += path.to_csv_str() + '\n'
 
         dir = os.getcwd()
-        file_name = datetime.date.today().strftime('%Y%m%d%H%M%s') + ".csv"
+        file_name = datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S') + ".csv"
         file_path = dir + "/" + file_name
         with open(file_path, mode='w') as f:
             f.write(csv_str)

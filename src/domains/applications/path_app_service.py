@@ -1,15 +1,27 @@
+from typing import List
 from domains.models.path_repository import AbstractPathRepository
 # from domains.models.path_factory import AbstractPathFactory
 from domains.services.path_service import PathService
 
+
 class OutputFileListInput:
 
-    def __init__(self, dir_path: str):
+    def __init__(self, dir_path: str, ignore_extensions: List[str], is_ignore_directory: bool):
         self.__dir_path = dir_path
+        self.__ignore_extensions = ignore_extensions
+        self.__is_ignore_directory = is_ignore_directory
 
     @property
     def dir_path(self):
         return self.__dir_path
+
+    @property
+    def ignore_extensions(self):
+        return self.__ignore_extensions       
+
+    @property
+    def is_ignore_directory(self):
+        return self.__is_ignore_directory
 
     def validate(self):
         if(self.__dir_path is None):
@@ -43,11 +55,13 @@ class PathAppService:
         input.validate()
         # load a file list
         file_list = self.__repository.findAll(input.dir_path)
+        # filter
+        file_list = self.__path_service.filter_list(file_list, input.ignore_extensions, input.is_ignore_directory)
         if(len(file_list) < 1):
             raise Exception("no file existed")
 
-        for file in file_list:
-            print("file:{}".format(file))
+        # for file in file_list:
+        #    print("file:{}".format(file))
 
         # save file list
         self.__repository.save(file_list)

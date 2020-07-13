@@ -9,7 +9,7 @@ import traceback
 sys.path.append('.console')
 
 
-args = ConsoleArgs(sys.argv)
+args = ConsoleArgs()
 
 repository = OSPathRepository(OSPathFactory())
 app_service = PathAppService(PathService(repository), repository)
