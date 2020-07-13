@@ -4,7 +4,7 @@ import datetime
 from typing import List
 from domains.models.path_repository import AbstractPathRepository
 from domains.models.path import PathBase
-from domains.services.path_service import CompareResults
+from domains.services.path_service import CompareResults, CompareInfo
 
 
 class OSPathRepository(AbstractPathRepository):
@@ -13,14 +13,14 @@ class OSPathRepository(AbstractPathRepository):
         # for prob, add * mark
         plob_path = path
         if(path.endswith("/")):
-            prob_path = path + "*"
+            prob_path = path + "**"
         else:
-            prob_path = path + "/*"
+            prob_path = path + "/**"
 
         print("target path:{}".format(prob_path))
 
         file_list = []
-        file_str_list = glob.glob(prob_path)
+        file_str_list = glob.glob(prob_path, recursive=True)
         for file_str in file_str_list:
             print(file_str)
             file = self.factory.create(file_str)
@@ -47,7 +47,7 @@ class OSPathRepository(AbstractPathRepository):
     def save_compare_result(self, result: CompareResults):
         csv_str = f'success:{result.success_count},fail:{result.fail_count}\n'
         # add a header
-        csv_str += CompareResults.get_csv_header_str() + '\n'
+        csv_str += CompareInfo.get_csv_header_str() + '\n'
         for res in result.results:
             csv_str += res.to_csv_str() + '\n'
 

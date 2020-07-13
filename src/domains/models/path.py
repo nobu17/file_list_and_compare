@@ -33,13 +33,13 @@ class PathBase(metaclass=ABCMeta):
         if(target is None):
             return (False, "compare target is null")
         if(self.path != target.path):
-            return (False, "path is different")
+            return (False, "path is different. expected:{} actual:{}".format(self.path, target.path))
         if(self.name != target.name):
-            return (False, "name is different")
+            return (False, "name is different. expected:{} actual:{}".format(self.name, target.name))
         if(self.created_str != target.created_str):
-            return (False, "created is different")
+            return (False, "created is different. expected:{} actual:{}".format(self.created_str, target.created_str))
         if(self.updated_str != target.updated_str):
-            return (False, "updated is different")
+            return (False, "updated is different. expected:{} actual:{}".format(self.updated_str, target.updated_str))
 
         return (True, "")
 
@@ -103,11 +103,11 @@ class File(PathBase):
             return result
 
         if (self.dir != target.dir):
-            return (False, "dir is different.from:{0}, to:{1}".format(self.dir, target.dir))
+            return (False, "dir is different.expected:{0} actual:{1}".format(self.dir, target.dir))
         if (self.extension != target.extension):
-            return (False, "extension is different")
+            return (False, "extension is different. expected:{} actual:{}".format(self.extension, target.extension))
         if (self.size != target.size):
-            return (False, "size is different")
+            return (False, "size is different. expected:{} actual:{}".format(self.size, target.size))
         
         return (True, "")
 
