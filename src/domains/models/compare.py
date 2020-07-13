@@ -7,6 +7,10 @@ class CompareInfo:
         self.__isSucceed = isSucceed
         self.__error_message = error_message
 
+    @staticmethod
+    def get_csv_header_str() -> str:
+        return PathBase.get_csv_header_str() + ",compare_result,error_message"
+
     def to_csv_str(self) -> str:
         return self.info.to_csv_str() + f',{self.isSucceed},{self.error_message}' 
 

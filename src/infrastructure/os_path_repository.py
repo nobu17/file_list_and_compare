@@ -6,6 +6,7 @@ from domains.models.path_repository import AbstractPathRepository
 from domains.models.path import PathBase
 from domains.services.path_service import CompareResults
 
+
 class OSPathRepository(AbstractPathRepository):
 
     def findAll(self, path: str) -> List[PathBase]:
@@ -32,7 +33,8 @@ class OSPathRepository(AbstractPathRepository):
         return file
 
     def save(self, paths: List[PathBase]):
-        csv_str = ""
+        # add a header
+        csv_str = PathBase.get_csv_header_str() + '\n'
         for path in paths:
             csv_str += path.to_csv_str() + '\n'
 
@@ -44,6 +46,8 @@ class OSPathRepository(AbstractPathRepository):
 
     def save_compare_result(self, result: CompareResults):
         csv_str = f'success:{result.success_count},fail:{result.fail_count}\n'
+        # add a header
+        csv_str += CompareResults.get_csv_header_str() + '\n'
         for res in result.results:
             csv_str += res.to_csv_str() + '\n'
 
@@ -63,7 +67,9 @@ class OSPathRepository(AbstractPathRepository):
                 try:
                     line_num += 1
                     line = f.readline().rstrip('\n')
-                    print(len(line))
+                    # skip a header
+                    if(line_num == 1):
+                        continue
                     if(len(line) != 0):
                         files_list.append(
                             self.factory.create_from_csv_str(line))

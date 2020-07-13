@@ -17,6 +17,10 @@ class PathBase(metaclass=ABCMeta):
         return f'[path:{self.path}, name:{self.name}, created:{self.created_str}, updated:{self.updated_str}]'
 
     @staticmethod
+    def get_csv_header_str() -> str:
+        return "path,name,created,updated,dir,extension,size"
+
+    @staticmethod
     def _datetime_to_str(dt: datetime) -> str:
         return dt.strftime("%Y/%m/%d %H:%M")
 
